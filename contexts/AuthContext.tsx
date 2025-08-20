@@ -105,7 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
       if (insertError) {
-        console.error('Error storing verification code:', insertError.message);
+        console.error('Error storing verification code:', insertError);
         return false;
       }
 
@@ -118,14 +118,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (error) {
-        console.error('Error sending SMS:', error.message);
+        console.error('Error sending SMS:', error);
         return false;
       }
 
       return data?.success === true;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error('Error sending verification code:', errorMessage);
+      console.error('Error sending verification code:', error);
       return false;
     }
   };
