@@ -91,6 +91,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const sendVerificationCode = async (phoneNumber: string): Promise<boolean> => {
     try {
+      // Check if Supabase is properly configured
+      if (!supabase.supabaseUrl || !supabase.supabaseKey) {
+        console.error('Supabase is not properly configured');
+        return false;
+      }
+
       const code = generateVerificationCode();
       const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
@@ -105,7 +111,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
       if (insertError) {
-        console.error('Error storing verification code:', insertError);
+        console.error('Error storing verification code:', insertError.message);
         return false;
       }
 
@@ -118,13 +124,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (error) {
-        console.error('Error sending SMS:', error);
+        console.error('Error sending SMS:', error.message);
         return false;
       }
 
       return data?.success === true;
     } catch (error) {
-      console.error('Error sending verification code:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Error sending verification code:', errorMessage);
       return false;
     }
   };
