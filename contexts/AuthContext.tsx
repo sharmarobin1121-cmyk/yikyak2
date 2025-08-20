@@ -91,12 +91,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const sendVerificationCode = async (phoneNumber: string): Promise<boolean> => {
     try {
-      // Check if Supabase is properly configured
-      if (!supabase.supabaseUrl || !supabase.supabaseKey) {
-        console.error('Supabase is not properly configured');
-        return false;
-      }
-
       const code = generateVerificationCode();
       const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
