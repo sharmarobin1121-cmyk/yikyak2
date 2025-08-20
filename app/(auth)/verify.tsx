@@ -10,12 +10,11 @@ import {
   Platform,
   ScrollView,
   Dimensions,
-  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
-import { Shield, ArrowLeft, Sparkles, Zap, Lock, CircleCheck as CheckCircle } from 'lucide-react-native';
+import { Shield, ArrowLeft, Sparkles, Zap } from 'lucide-react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -78,30 +77,20 @@ export default function VerifyScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#667eea', '#764ba2', '#f093fb']}
+        colors={['#FF6B9D', '#8B5CF6', '#3B82F6']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.gradient}
       >
-        {/* Background Image */}
-        <Image
-          source={{ uri: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1200' }}
-          style={styles.backgroundImage}
-        />
-        <View style={styles.overlay} />
-
         {/* Floating Elements */}
         <View style={[styles.floatingElement, styles.sparkle1]}>
-          <Sparkles size={22} color="rgba(255, 255, 255, 0.5)" />
+          <Sparkles size={18} color="rgba(255, 255, 255, 0.4)" />
         </View>
         <View style={[styles.floatingElement, styles.zap1]}>
-          <Zap size={20} color="rgba(255, 255, 255, 0.4)" fill="rgba(255, 255, 255, 0.4)" />
+          <Zap size={16} color="rgba(255, 255, 255, 0.3)" fill="rgba(255, 255, 255, 0.3)" />
         </View>
-        <View style={[styles.floatingElement, styles.lock1]}>
-          <Lock size={18} color="rgba(255, 255, 255, 0.3)" />
-        </View>
-        <View style={[styles.floatingElement, styles.check1]}>
-          <CheckCircle size={24} color="rgba(255, 255, 255, 0.4)" />
+        <View style={[styles.floatingElement, styles.sparkle2]}>
+          <Sparkles size={14} color="rgba(255, 255, 255, 0.3)" />
         </View>
 
         <KeyboardAvoidingView
@@ -120,10 +109,10 @@ export default function VerifyScreen() {
               <View style={styles.headerContainer}>
                 <View style={styles.iconContainer}>
                   <LinearGradient
-                    colors={['#ff6b9d', '#c471ed', '#12c2e9']}
+                    colors={['#FF6B9D', '#8B5CF6']}
                     style={styles.iconGradient}
                   >
-                    <Shield size={42} color="#FFFFFF" />
+                    <Shield size={36} color="#FFFFFF" />
                   </LinearGradient>
                 </View>
                 <Text style={styles.title}>Almost There! ✨</Text>
@@ -160,7 +149,7 @@ export default function VerifyScreen() {
                   disabled={isLoading}
                 >
                   <LinearGradient
-                    colors={['#ff6b9d', '#c471ed', '#12c2e9']}
+                    colors={['#FF6B9D', '#8B5CF6']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={styles.buttonGradient}
@@ -195,37 +184,21 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
   },
-  backgroundImage: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    opacity: 0.3,
-  },
-  overlay: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-  },
   floatingElement: {
     position: 'absolute',
     zIndex: 1,
   },
   sparkle1: {
-    top: height * 0.18,
-    right: width * 0.08,
+    top: height * 0.2,
+    right: width * 0.1,
   },
   zap1: {
-    top: height * 0.28,
-    left: width * 0.06,
+    top: height * 0.3,
+    left: width * 0.08,
   },
-  lock1: {
-    top: height * 0.72,
-    right: width * 0.12,
-  },
-  check1: {
-    top: height * 0.82,
-    left: width * 0.1,
+  sparkle2: {
+    top: height * 0.7,
+    right: width * 0.15,
   },
   keyboardAvoidingView: {
     flex: 1,
@@ -236,72 +209,65 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 28,
-    paddingTop: 70,
+    paddingHorizontal: 24,
+    paddingTop: 60,
     paddingBottom: 40,
     justifyContent: 'center',
   },
   backButton: {
     position: 'absolute',
-    top: 70,
-    left: 28,
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    top: 60,
+    left: 24,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 6,
   },
   headerContainer: {
     alignItems: 'center',
-    marginBottom: 70,
+    marginBottom: 60,
   },
   iconContainer: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-    marginBottom: 28,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    marginBottom: 24,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.4,
-    shadowRadius: 20,
-    elevation: 12,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 8,
   },
   iconGradient: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
-    fontSize: 36,
-    fontWeight: '800',
+    fontSize: 32,
+    fontWeight: '700',
     color: '#FFFFFF',
-    marginBottom: 20,
+    marginBottom: 16,
     textAlign: 'center',
-    textShadowColor: 'rgba(0, 0, 0, 0.4)',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 6,
-    letterSpacing: 0.5,
+    textShadowRadius: 4,
   },
   subtitle: {
     fontSize: 18,
-    color: 'rgba(255, 255, 255, 0.95)',
+    color: 'rgba(255, 255, 255, 0.9)',
     textAlign: 'center',
-    lineHeight: 28,
+    lineHeight: 26,
     fontWeight: '500',
   },
   phoneNumber: {
-    fontWeight: '800',
+    fontWeight: '700',
     color: '#FFFFFF',
-    letterSpacing: 1,
   },
   codeContainer: {
     alignItems: 'center',
@@ -309,65 +275,60 @@ const styles = StyleSheet.create({
   codeInputContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 50,
-    gap: 16,
+    marginBottom: 40,
+    gap: 12,
   },
   codeInputWrapper: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.15,
-    shadowRadius: 16,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
   },
   codeInput: {
-    width: 56,
-    height: 68,
-    backgroundColor: 'rgba(255, 255, 255, 0.98)',
-    borderRadius: 20,
-    fontSize: 28,
-    fontWeight: '800',
+    width: 50,
+    height: 60,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 16,
+    fontSize: 24,
+    fontWeight: '700',
     textAlign: 'center',
     color: '#1F2937',
     borderWidth: 2,
     borderColor: 'transparent',
   },
   codeInputFilled: {
-    borderColor: '#ff6b9d',
+    borderColor: '#FF6B9D',
     backgroundColor: '#FFFFFF',
-    shadowColor: '#ff6b9d',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
   },
   button: {
-    borderRadius: 25,
+    borderRadius: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
-    shadowRadius: 20,
-    elevation: 12,
-    marginBottom: 28,
+    shadowRadius: 12,
+    elevation: 8,
+    marginBottom: 24,
     width: '100%',
   },
   buttonDisabled: {
     opacity: 0.7,
   },
   buttonGradient: {
-    paddingVertical: 22,
-    borderRadius: 25,
+    paddingVertical: 20,
+    borderRadius: 20,
     alignItems: 'center',
   },
   buttonText: {
     fontSize: 18,
-    fontWeight: '800',
+    fontWeight: '700',
     color: '#FFFFFF',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 3,
-    letterSpacing: 0.5,
+    textShadowRadius: 2,
   },
   resendButton: {
-    paddingVertical: 16,
+    paddingVertical: 12,
   },
   resendButtonText: {
     fontSize: 16,
@@ -376,8 +337,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   resendLink: {
-    fontWeight: '800',
+    fontWeight: '700',
     textDecorationLine: 'underline',
-    color: '#FFFFFF',
   },
 });

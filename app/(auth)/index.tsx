@@ -10,12 +10,11 @@ import {
   Platform,
   ScrollView,
   Dimensions,
-  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
-import { Heart, Sparkles, Phone, Zap, Star, Users } from 'lucide-react-native';
+import { Heart, Sparkles, Phone, Zap } from 'lucide-react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -39,24 +38,18 @@ export default function LoginScreen() {
   };
 
   const handleSendCode = async () => {
-    // Clean phone number (remove formatting)
-    const cleanPhoneNumber = phoneNumber.replace(/\D/g, '');
-    
-    if (!cleanPhoneNumber || cleanPhoneNumber.length < 10) {
+    if (!phoneNumber || phoneNumber.length < 14) {
       Alert.alert('Error', 'Please enter a valid phone number');
       return;
     }
 
-    // Format phone number for Twilio (add +1 for US numbers)
-    const formattedPhoneNumber = `+1${cleanPhoneNumber}`;
-
     setIsLoading(true);
     try {
-      const success = await sendVerificationCode(formattedPhoneNumber);
+      const success = await sendVerificationCode(phoneNumber);
       if (success) {
         router.push({
           pathname: '/(auth)/verify',
-          params: { phoneNumber: formattedPhoneNumber },
+          params: { phoneNumber },
         });
       } else {
         Alert.alert('Error', 'Failed to send verification code. Please try again.');
@@ -71,33 +64,26 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#667eea', '#764ba2', '#f093fb']}
+        colors={['#FF6B9D', '#8B5CF6', '#3B82F6']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.gradient}
       >
-        {/* Background Image */}
-        <Image
-          source={{ uri: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200' }}
-          style={styles.backgroundImage}
-        />
-        <View style={styles.overlay} />
-
         {/* Floating Elements */}
         <View style={[styles.floatingElement, styles.heart1]}>
-          <Heart size={24} color="rgba(255, 255, 255, 0.4)" fill="rgba(255, 255, 255, 0.4)" />
+          <Heart size={20} color="rgba(255, 255, 255, 0.3)" fill="rgba(255, 255, 255, 0.3)" />
         </View>
         <View style={[styles.floatingElement, styles.sparkle1]}>
-          <Sparkles size={20} color="rgba(255, 255, 255, 0.5)" />
+          <Sparkles size={16} color="rgba(255, 255, 255, 0.4)" />
         </View>
         <View style={[styles.floatingElement, styles.zap1]}>
-          <Zap size={22} color="rgba(255, 255, 255, 0.4)" fill="rgba(255, 255, 255, 0.4)" />
+          <Zap size={18} color="rgba(255, 255, 255, 0.3)" fill="rgba(255, 255, 255, 0.3)" />
         </View>
-        <View style={[styles.floatingElement, styles.star1]}>
-          <Star size={18} color="rgba(255, 255, 255, 0.3)" fill="rgba(255, 255, 255, 0.3)" />
+        <View style={[styles.floatingElement, styles.heart2]}>
+          <Heart size={14} color="rgba(255, 255, 255, 0.2)" fill="rgba(255, 255, 255, 0.2)" />
         </View>
-        <View style={[styles.floatingElement, styles.users1]}>
-          <Users size={26} color="rgba(255, 255, 255, 0.3)" />
+        <View style={[styles.floatingElement, styles.sparkle2]}>
+          <Sparkles size={22} color="rgba(255, 255, 255, 0.3)" />
         </View>
 
         <KeyboardAvoidingView
@@ -110,38 +96,38 @@ export default function LoginScreen() {
               <View style={styles.logoContainer}>
                 <View style={styles.logoCircle}>
                   <LinearGradient
-                    colors={['#ff6b9d', '#c471ed', '#12c2e9']}
+                    colors={['#FF6B9D', '#8B5CF6']}
                     style={styles.logoGradient}
                   >
-                    <Heart size={48} color="#FFFFFF" fill="#FFFFFF" />
+                    <Heart size={40} color="#FFFFFF" fill="#FFFFFF" />
                   </LinearGradient>
                 </View>
                 <Text style={styles.appName}>Spark</Text>
-                <Text style={styles.tagline}>Where hearts connect anonymously</Text>
+                <Text style={styles.tagline}>Anonymous connections that matter</Text>
               </View>
 
               {/* Main Content */}
               <View style={styles.mainContent}>
                 <View style={styles.titleContainer}>
-                  <Text style={styles.title}>Ready to Spark? ✨</Text>
+                  <Text style={styles.title}>Ready to Spark?</Text>
                   <Text style={styles.subtitle}>
-                    Connect with amazing souls nearby while staying completely anonymous
+                    Connect anonymously with amazing people nearby
                   </Text>
                 </View>
 
                 <View style={styles.formContainer}>
                   <View style={styles.inputWrapper}>
                     <View style={styles.inputIconContainer}>
-                      <Phone size={22} color="#667eea" />
+                      <Phone size={20} color="#8B5CF6" />
                     </View>
                     <TextInput
                       style={styles.input}
-                      placeholder="Enter your phone number"
-                      placeholderTextColor="rgba(102, 126, 234, 0.6)"
+                      placeholder="(555) 123-4567"
+                      placeholderTextColor="rgba(139, 92, 246, 0.5)"
                       value={phoneNumber}
                       onChangeText={handlePhoneNumberChange}
                       keyboardType="phone-pad"
-                      maxLength={17}
+                      maxLength={14}
                     />
                   </View>
 
@@ -151,13 +137,13 @@ export default function LoginScreen() {
                     disabled={isLoading}
                   >
                     <LinearGradient
-                      colors={['#ff6b9d', '#c471ed', '#12c2e9']}
+                      colors={['#FF6B9D', '#8B5CF6']}
                       start={{ x: 0, y: 0 }}
                       end={{ x: 1, y: 0 }}
                       style={styles.buttonGradient}
                     >
                       <Text style={styles.buttonText}>
-                        {isLoading ? 'Sending Magic...' : 'Send Verification Code ✨'}
+                        {isLoading ? 'Sending Magic...' : 'Send Code ✨'}
                       </Text>
                     </LinearGradient>
                   </TouchableOpacity>
@@ -165,20 +151,20 @@ export default function LoginScreen() {
 
                 <View style={styles.featuresContainer}>
                   <View style={styles.feature}>
-                    <View style={[styles.featureIcon, { backgroundColor: 'rgba(255, 107, 157, 0.2)' }]}>
-                      <Heart size={18} color="#ff6b9d" />
+                    <View style={styles.featureIcon}>
+                      <Heart size={16} color="#FF6B9D" />
                     </View>
                     <Text style={styles.featureText}>100% Anonymous</Text>
                   </View>
                   <View style={styles.feature}>
-                    <View style={[styles.featureIcon, { backgroundColor: 'rgba(196, 113, 237, 0.2)' }]}>
-                      <Zap size={18} color="#c471ed" />
+                    <View style={styles.featureIcon}>
+                      <Zap size={16} color="#8B5CF6" />
                     </View>
                     <Text style={styles.featureText}>5-Mile Radius</Text>
                   </View>
                   <View style={styles.feature}>
-                    <View style={[styles.featureIcon, { backgroundColor: 'rgba(18, 194, 233, 0.2)' }]}>
-                      <Sparkles size={18} color="#12c2e9" />
+                    <View style={styles.featureIcon}>
+                      <Sparkles size={16} color="#3B82F6" />
                     </View>
                     <Text style={styles.featureText}>Real Connections</Text>
                   </View>
@@ -188,7 +174,7 @@ export default function LoginScreen() {
               <View style={styles.footer}>
                 <Text style={styles.footerText}>
                   By continuing, you agree to our{' '}
-                  <Text style={styles.footerLink}>Terms of Service</Text> and{' '}
+                  <Text style={styles.footerLink}>Terms</Text> and{' '}
                   <Text style={styles.footerLink}>Privacy Policy</Text>
                 </Text>
               </View>
@@ -207,41 +193,29 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
   },
-  backgroundImage: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    opacity: 0.3,
-  },
-  overlay: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-  },
   floatingElement: {
     position: 'absolute',
     zIndex: 1,
   },
   heart1: {
-    top: height * 0.12,
-    right: width * 0.08,
+    top: height * 0.15,
+    right: width * 0.1,
   },
   sparkle1: {
-    top: height * 0.22,
-    left: width * 0.06,
+    top: height * 0.25,
+    left: width * 0.08,
   },
   zap1: {
-    top: height * 0.32,
-    right: width * 0.12,
+    top: height * 0.35,
+    right: width * 0.15,
   },
-  star1: {
-    top: height * 0.68,
-    left: width * 0.1,
+  heart2: {
+    top: height * 0.65,
+    left: width * 0.12,
   },
-  users1: {
-    top: height * 0.78,
-    right: width * 0.06,
+  sparkle2: {
+    top: height * 0.75,
+    right: width * 0.08,
   },
   keyboardAvoidingView: {
     flex: 1,
@@ -252,48 +226,46 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 28,
-    paddingTop: 70,
+    paddingHorizontal: 24,
+    paddingTop: 60,
     paddingBottom: 40,
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 70,
+    marginBottom: 60,
   },
   logoCircle: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 20,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 16,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.4,
-    shadowRadius: 20,
-    elevation: 12,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 8,
   },
   logoGradient: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
   },
   appName: {
-    fontSize: 42,
-    fontWeight: '900',
+    fontSize: 36,
+    fontWeight: '800',
     color: '#FFFFFF',
     marginBottom: 8,
-    textShadowColor: 'rgba(0, 0, 0, 0.4)',
-    textShadowOffset: { width: 0, height: 3 },
-    textShadowRadius: 6,
-    letterSpacing: 1,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   tagline: {
-    fontSize: 17,
-    color: 'rgba(255, 255, 255, 0.95)',
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.9)',
     textAlign: 'center',
-    fontWeight: '600',
-    letterSpacing: 0.5,
+    fontWeight: '500',
   },
   mainContent: {
     flex: 1,
@@ -301,80 +273,75 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     alignItems: 'center',
-    marginBottom: 50,
+    marginBottom: 40,
   },
   title: {
-    fontSize: 36,
-    fontWeight: '800',
+    fontSize: 32,
+    fontWeight: '700',
     color: '#FFFFFF',
-    marginBottom: 16,
+    marginBottom: 12,
     textAlign: 'center',
-    textShadowColor: 'rgba(0, 0, 0, 0.4)',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 6,
-    letterSpacing: 0.5,
+    textShadowRadius: 4,
   },
   subtitle: {
     fontSize: 18,
-    color: 'rgba(255, 255, 255, 0.95)',
+    color: 'rgba(255, 255, 255, 0.9)',
     textAlign: 'center',
-    lineHeight: 28,
+    lineHeight: 26,
     fontWeight: '500',
-    paddingHorizontal: 10,
   },
   formContainer: {
-    marginBottom: 50,
+    marginBottom: 40,
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.98)',
-    borderRadius: 25,
-    marginBottom: 28,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 20,
+    marginBottom: 24,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.15,
-    shadowRadius: 20,
-    elevation: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 5,
   },
   inputIconContainer: {
-    paddingLeft: 24,
-    paddingRight: 16,
+    paddingLeft: 20,
+    paddingRight: 12,
   },
   input: {
     flex: 1,
-    paddingVertical: 22,
-    paddingRight: 24,
+    paddingVertical: 20,
+    paddingRight: 20,
     fontSize: 18,
     color: '#1F2937',
     fontWeight: '600',
   },
   button: {
-    borderRadius: 25,
+    borderRadius: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
-    shadowRadius: 20,
-    elevation: 12,
+    shadowRadius: 12,
+    elevation: 8,
   },
   buttonDisabled: {
     opacity: 0.7,
   },
   buttonGradient: {
-    paddingVertical: 22,
-    borderRadius: 25,
+    paddingVertical: 20,
+    borderRadius: 20,
     alignItems: 'center',
   },
   buttonText: {
     fontSize: 18,
-    fontWeight: '800',
+    fontWeight: '700',
     color: '#FFFFFF',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 3,
-    letterSpacing: 0.5,
+    textShadowRadius: 2,
   },
   featuresContainer: {
     flexDirection: 'row',
@@ -385,39 +352,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   featureIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
+    marginBottom: 8,
   },
   featureText: {
-    fontSize: 13,
-    color: 'rgba(255, 255, 255, 0.95)',
-    fontWeight: '700',
+    fontSize: 12,
+    color: 'rgba(255, 255, 255, 0.9)',
+    fontWeight: '600',
     textAlign: 'center',
-    letterSpacing: 0.3,
   },
   footer: {
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 20,
   },
   footerText: {
     fontSize: 13,
-    color: 'rgba(255, 255, 255, 0.85)',
+    color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
-    lineHeight: 22,
-    fontWeight: '500',
+    lineHeight: 20,
   },
   footerLink: {
-    fontWeight: '700',
+    fontWeight: '600',
     textDecorationLine: 'underline',
-    color: 'rgba(255, 255, 255, 0.95)',
   },
 });

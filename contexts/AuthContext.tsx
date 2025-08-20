@@ -48,30 +48,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const sendVerificationCode = async (phoneNumber: string): Promise<boolean> => {
     try {
-      const response = await fetch('/api/send-code', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phoneNumber }),
-      });
-
-      let data: any = null;
-      try {
-        data = await response.clone().json();
-      } catch {
-        // Response wasn't JSON (likely HTML error page)
-        const text = await response.text();
-        console.error('Unexpected response when sending code:', text);
-        return false;
-      }
-
-      if (response.ok && data.success) {
-        return true;
-      } else {
-        console.error('Failed to send verification code:', data.error || 'Unknown error');
-        return false;
-      }
+      // Simulate API call to send verification code
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log(`Sending verification code to ${phoneNumber}`);
+      return true;
     } catch (error) {
       console.error('Error sending verification code:', error);
       return false;
@@ -80,32 +60,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (phoneNumber: string, code: string): Promise<boolean> => {
     try {
-      const response = await fetch('/api/verify-code', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phoneNumber, code }),
-      });
-
-      let data: any = null;
-      try {
-        data = await response.clone().json();
-      } catch {
-        const text = await response.text();
-        console.error('Unexpected response when verifying code:', text);
-        return false;
-      }
-
-      if (response.ok && data.success && data.verified) {
-        const userData: User = data.user;
+      // Simulate API call to verify code
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // For demo purposes, accept any 6-digit code
+      if (code.length === 6) {
+        const userData: User = {
+          id: `user_${Date.now()}`,
+          phoneNumber,
+          isAuthenticated: true,
+        };
+        
         await AsyncStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
         return true;
-      } else {
-        console.error('Verification failed:', data.error || 'Unknown error');
-        return false;
       }
+      return false;
     } catch (error) {
       console.error('Error logging in:', error);
       return false;
@@ -118,7 +88,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(null);
     } catch (error) {
       console.error('Error logging out:', error);
-      throw error;
     }
   };
 
