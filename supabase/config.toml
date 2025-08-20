@@ -1,0 +1,8 @@
+[project]
+ref = "your-project-ref"
+
+[functions.send-sms]
+verify_jwt = false
+
+[functions.send-sms.net]
+allowed_hosts = ["api.twilio.com"]
