@@ -56,12 +56,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         body: JSON.stringify({ phoneNumber }),
       });
 
-      const data = await response.json();
-      
+      let data: any = null;
+      try {
+        data = await response.clone().json();
+      } catch {
+        // Response wasn't JSON (likely HTML error page)
+        const text = await response.text();
+        console.error('Unexpected response when sending code:', text);
+        return false;
+      }
+
       if (response.ok && data.success) {
         return true;
       } else {
-        console.error('Failed to send verification code:', data.error);
+        console.error('Failed to send verification code:', data.error || 'Unknown error');
         return false;
       }
     } catch (error) {
@@ -80,15 +88,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         body: JSON.stringify({ phoneNumber, code }),
       });
 
-      const data = await response.json();
-      
+      let data: any = null;
+      try {
+        data = await response.clone().json();
+      } catch {
+        const text = await response.text();
+        console.error('Unexpected response when verifying code:', text);
+        return false;
+      }
+
       if (response.ok && data.success && data.verified) {
         const userData: User = data.user;
         await AsyncStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
         return true;
       } else {
-        console.error('Verification failed:', data.error);
+        console.error('Verification failed:', data.error || 'Unknown error');
         return false;
       }
     } catch (error) {
